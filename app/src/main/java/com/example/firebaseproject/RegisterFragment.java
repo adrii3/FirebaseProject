@@ -28,24 +28,15 @@ import com.google.firebase.auth.FirebaseUser;
  * A simple {@link Fragment} subclass.
  */
 public class RegisterFragment extends Fragment {
-
-    EditText emailEditText;
-    EditText passwordEditText;
+    NavController navController;
+    private EditText emailEditText, passwordEditText;
     private Button registerButton;
     private FirebaseAuth mAuth;
-    NavController navController;
 
-
-
-    public RegisterFragment() {
-        // Required empty public constructor
-    }
-
+    public RegisterFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
@@ -53,12 +44,12 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        emailEditText = view.findViewById(R.id.emailEditText);
-        passwordEditText = view.findViewById(R.id.passwordEditText);
+        navController = Navigation.findNavController(view);
+
         mAuth = FirebaseAuth.getInstance();
 
-        navController = Navigation.findNavController(view);  // <-----------------
-
+        emailEditText = view.findViewById(R.id.emailEditText);
+        passwordEditText = view.findViewById(R.id.passwordEditText);
         registerButton = view.findViewById(R.id.registerButton);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
@@ -67,7 +58,6 @@ public class RegisterFragment extends Fragment {
                 crearCuenta();
             }
         });
-
     }
 
     private void crearCuenta() {
@@ -85,11 +75,10 @@ public class RegisterFragment extends Fragment {
                             actualizarUI(mAuth.getCurrentUser());
                         } else {
                             Snackbar.make(requireView(), "Error: " + task.getException(), Snackbar.LENGTH_LONG).show();
-
                         }
-                        registerButton.setEnabled(true);
                     }
                 });
+
     }
 
     private void actualizarUI(FirebaseUser currentUser) {
@@ -117,5 +106,6 @@ public class RegisterFragment extends Fragment {
 
         return valid;
     }
+
 
 }
